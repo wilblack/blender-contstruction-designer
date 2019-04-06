@@ -89,6 +89,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+blender_env/
 
 # Spyder project settings
 .spyderproject
@@ -102,3 +103,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+# Blender stuff
+*.blend
+*.blend*
+
+# Intellij stuff
+.idea/
+*.iml
