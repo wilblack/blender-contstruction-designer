@@ -1,3 +1,6 @@
+
+
+
 bl_info = {
     "name": "2 x 12",
     "author": "Wil Black    ",
@@ -26,7 +29,9 @@ if not dir in sys.path:
     sys.path.append(dir )
 
 from pioneer_trail.ground import create_ground
-from pioneer_trail.house import create_house
+from pioneer_trail.house import create_house, create_deck
+from lumber_yard.two_bys import add_2by12
+from lumber_yard.utils import feet
 
 scene = bpy.context.scene
 mat_dirt = bpy.data.materials.new(name="Dirt")
@@ -88,63 +93,6 @@ def create_trees():
         location=(12, 60 + 4 * 12, 320))
     bpy.context.object.data.materials.append(mat_tree_top)
     bpy.context.object.active_material.diffuse_color = canopy_green
-
-def add_2by12(length, location, rotation=(0,0,0)):
-
-    verts = [
-        Vector((0, 0, 0)),
-        Vector((0, 0, 1.5)),
-        Vector((11.5, 0, 1.5)),
-        Vector((11.5, 0, 0)),
-
-        Vector((0, length, 0)),
-        Vector((0, length, 1.5)),
-        Vector((11.5, length, 1.5)),
-        Vector((11.5, length, 0)),
-    ]
-
-    edges = []
-    faces = [
-        [0, 1, 2, 3],
-        [4, 5, 6, 7],
-        [0, 4, 7, 3],
-        [1, 5, 6, 2],
-        [0, 1, 5, 4],
-        [3, 2, 6, 7]
-
-    ]
-
-    mesh = bpy.data.meshes.new(name="New 2x12")
-    mesh.from_pydata(verts, edges, faces)
-    mesh.validate(verbose=True)
-    obj = bpy.data.objects.new("2by12", mesh)
-    obj.location = location
-    obj.rotation_euler = rotation
-    obj["scripted"] = True
-    scene.objects.link(obj)
-
-    mat = bpy.data.materials.new('Material 2')
-    tex = bpy.data.textures.new(name="SomeName", type="IMAGE")
-    # filepath = "//assests/Wood_Root.jpg"
-    # image_path = os.path.expanduser(filepath)
-    image_path = "/Users/wilblack/Projects/blender/mtb-track/assets/Wood_Root.jpg"
-    image = bpy.data.images.load(image_path)
-    tex.image = image
-
-    slot = mat.texture_slots.add()
-    slot.texture = tex
-    slot.texture_coords = 'UV'
-    slot.use_map_color_diffuse = True
-    slot.use_map_color_emission = True
-    slot.emission_color_factor = 0.5
-    slot.use_map_density = True
-    slot.mapping = 'FLAT'
-    # mat.active_texture = tex
-    # mat.texture_slots[0].texture_coords = "GLOBAL"
-    # mat.texture_slots[0].mapping = "CUBE"
-
-    bpy.context.scene.objects.active = obj
-    obj.data.materials.append(mat)
 
 
 
@@ -292,12 +240,12 @@ def create_double_jump(height, width, gap, takeoff_dx, landing_dx, location, rot
 
 
 
-print("Clear objects")
-for obj in bpy.data.objects:
-
-    # if obj.get('scripted') :
-    print("Deleting {}".format(obj.name))
-    bpy.data.objects.remove(obj, True)
+# print("Clear objects")
+# for obj in bpy.data.objects:
+#
+#     # if obj.get('scripted') :
+#     print("Deleting {}".format(obj.name))
+#     bpy.data.objects.remove(obj, True)
 
 
 print("create_ground")
@@ -305,13 +253,15 @@ create_ground(scene)
 
 print("Creating house")
 create_house(scene)
-
+create_deck(scene)
 
 print("Adding Trees")
 create_trees()
 
 print("Adding Berm Uprights")
 create_berm_posts()
+
+
 
 
 print("Create_table_tops")
@@ -334,7 +284,7 @@ create_double_jump(5 * 12, 5 *12, 12*12, 7*12, 10 * 12, location, rotation)
 
 
 print("Adding in 2by12's")
-y = 48 + 4 * 12
+y = feet(4) + 48
 z = 18
 rotation = (0, radians(90), 0)
 _2by12s = [
@@ -350,7 +300,7 @@ _2by12s = [
     [backstop_x, y, z + 11.5 * 9],
 ]
 for location in _2by12s:
-    obj = add_2by12(16 * 12, location, rotation)
+    obj = add_2by12(scene, feet(16), location, rotation)
 
 print("Adding South 2x12's")
 y = 60 + 4 * 12
@@ -370,7 +320,7 @@ _2by12s = [
     [x, y, z + 11.5 * 9],
 ]
 for location in _2by12s:
-    obj = add_2by12(10 * 12, location, rotation)
+    obj = add_2by12(scene, feet(10), location, rotation)
 
 print("Adding North 2x12's")
 y = 270
@@ -390,4 +340,37 @@ _2by12s = [
     [x, y, z + 11.5 * 9],
 ]
 for location in _2by12s:
-    obj = add_2by12(10 * 12, location, rotation)
+    obj = add_2by12(scene, feet(10), location, rotation)
+
+
+for area in bpy.context.screen.areas:
+    if area.type == "VIEW_3D":
+        break
+
+for region in area.regions:
+    if region.type == "WINDOW":
+        break
+
+space = area.spaces[0]
+
+context = bpy.context.copy()
+context['area'] = area
+context['region'] = region
+context['space_data'] = space
+
+# bpy.ops.view3d.zoom(context, mx=500)
+# bpy.ops.view3d.view_pan(context, type='PANLEFT')
+bpy.ops.view3d.viewnumpad(context, 'EXEC_DEFAULT', type='TOP')
+bpy.ops.view3d.view_persportho(context, 'EXEC_DEFAULT')
+
+
+# cam = bpy.data.cameras.new("Cam")
+# cam_obj = bpy.data.objects.new("Cam", cam)
+# bpy.context.scene.objects.link(cam_obj)
+# scene.camera = cam_obj
+
+# camera = bpy.ops.object.camera_add(view_align=False,
+#                           location=[feet(50), feet(50), feet(100)],
+#                           rotation=[0, 0, 0])
+
+
