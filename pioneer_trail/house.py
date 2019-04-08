@@ -3,21 +3,22 @@ from math import ceil, radians, pi
 import bpy, os, pdb, sys
 from mathutils import Vector
 
+from lumber_yard.accessaries import Table
 from lumber_yard.decking import Decking, Stairs
 from lumber_yard.doors import Door, Window
 from lumber_yard.utils import feet
 
 
-
+DECK_COLOR = (184.0/255, 133.0/255, 31.0/255)
 DECK_HEIGHT = feet(12)
-HOUSE_Y_OFFSET = feet(50)
+HOUSE_Y_OFFSET = feet(60)
 
 DECK_LENGTH = feet(12.25)
 CURRENT_DECK_WIDTH = feet(19)
 CURRENT_DECK_Y_OFFSET = HOUSE_Y_OFFSET + feet(3)
 
-DECK_WIDTH = CURRENT_DECK_WIDTH + feet(8)
-DECK_Y_OFFSET = HOUSE_Y_OFFSET - feet(5)
+DECK_WIDTH = CURRENT_DECK_WIDTH + feet(9)
+DECK_Y_OFFSET = HOUSE_Y_OFFSET - feet(6)
 DECK_X_OFFSET = feet(40) + DECK_LENGTH
 
 
@@ -59,7 +60,7 @@ def create_deck(scene):
             obj.select = True
             obj.data.materials.append(mat_decking)
             bpy.context.scene.objects.active = obj
-            bpy.context.object.active_material.diffuse_color = (0.8, 0.5, 0.5)
+            bpy.context.object.active_material.diffuse_color = DECK_COLOR
 
     bpy.ops.object.join()
     bpy.ops.transform.translate(value=(DECK_X_OFFSET, DECK_Y_OFFSET, 0))
@@ -69,7 +70,7 @@ def create_deck(scene):
 
 
     name = 'old_deck'
-    decking = Decking(name, length, CURRENT_DECK_WIDTH, height + feet(0.5))
+    decking = Decking(name, length, CURRENT_DECK_WIDTH, height + feet(0.1))
     for board in decking.boards:
         scene.objects.link(board)
     # Rotate and translate deck
@@ -141,6 +142,25 @@ def create_deck(scene):
     bpy.ops.transform.rotate(value=pi, axis=(False, False, True))
     bpy.context.scene.objects.active = None
 
+
+    # Add a table
+    table = Table('table', dx=feet(3), dy=feet(4), height=feet(2.5))
+    for object in table.objects:
+        scene.objects.link(object)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    objects = bpy.context.scene.objects
+    for obj in objects:
+        label = obj.get('label', None)
+        if label and label == 'table'.format(name):
+            print("Selecting {0}".format(label))
+            obj.select = True
+            obj.data.materials.append(mat_doors)
+            bpy.context.scene.objects.active = obj
+
+    bpy.ops.object.join()
+    bpy.ops.transform.rotate(value=pi/2, axis=(False, False, True))
+    bpy.ops.transform.translate(value=(STAIRS_X_OFFSET - feet(1), STAIRS_Y_OFFSET + feet(2), DECK_HEIGHT))
 
 
 def create_house(scene):

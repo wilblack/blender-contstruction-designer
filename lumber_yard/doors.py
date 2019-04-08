@@ -6,6 +6,11 @@ from mathutils import Vector
 
 
 class DoorWindowBase:
+    """
+    w - x-axis
+    l - y-axis
+    h - z-axis
+    """
     def __init__(self, label, l, w, h):
         self.l = l
         self.h = h

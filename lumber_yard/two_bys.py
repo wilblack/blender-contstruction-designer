@@ -5,8 +5,9 @@ from mathutils import Vector
 
 class Board:
     """
-    h is the thickness, i.e. on a 2by is 1.5
-    w is the width of the board, i.e. on a 2by6 its 5.5
+    l is the length along y-axis
+    h is the thickness, i.e. on a 2by is 1.5, along z-axis
+    w is the width of the board, i.e. on a 2by6 its 5.5, along x-axis
     """
     name = '2by'
     def __init__(self, label, l, w, h, location, rotation=(0,0,0)):
@@ -56,6 +57,12 @@ class TwoBySix(Board):
     def __init__(self, label, l, location, rotation=(0,0,0)):
         super(TwoBySix, self).__init__(label, l, 5.5, 1.5, location, rotation)
 
+
+class OneByOne(Board):
+    name = '1by1'
+
+    def __init__(self, label, l, location=(0, 0, 0), rotation=(0, 0, 0)):
+        super(OneByOne, self).__init__(label, l, 1.0, 1.0, location, rotation)
 
 
 
