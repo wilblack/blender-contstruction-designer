@@ -1,36 +1,77 @@
-from math import ceil, floor
+from math import ceil, floor, pi
 
-from lumber_yard.two_bys import TwoBySix
+from lumber_yard.two_bys import TwoBySix, TwoByEight
+from lumber_yard.utils import feet
+
 
 class Decking:
     """
-    l is the length of the 2by's, x-axis
-    w is the width of the deck, y-axis
+    dy is the length of the 2by's, x-axis
+    dx is the width of the deck, y-axis
 
     the boards run parellel to the y-axis.
     """
 
-    def __init__(self, name, l, w, h, type='2by6'):
+    def __init__(self, name, dy, dx, height, type='2by6'):
+        self.name = name
+        self.dx = dx
+        self.dy = dy
+        self.height = height
         self.spacing = 0.25
+        self.beam_center = feet(4)
+
         self.board_width = self.get_board_width(type)
 
-        num_boards = self.get_num_boards(w)
-        self.boards = []
+        self.num_boards = self.get_num_boards()
+        self.num_beams = self.get_num_beams()
+        self.boards = self.get_surface()
 
-        label = '{0}_{1}'.format(name, type)
+        beams = self.get_beams()
+        self.boards.extend(beams)
+
+
+    def get_surface(self):
+        label = self.name
         dx = self.spacing + self.board_width
         x_offset = 0.0
-        for i in range(num_boards):
-            location = (x_offset, 0, h)
-            board = TwoBySix(label, l, location)
-            self.boards.append(board.object)
+        boards = []
+        for i in range(self.num_boards):
+            location = (x_offset, 0, self.height)
+            board = TwoBySix(label, self.dy, location)
+            boards.append(board.object)
             x_offset = x_offset + dx
+        return boards
 
 
+    def get_beams(self):
+        label = self.name
+        dy = self.beam_center
+        y_offset = 0.0
+        beams = []
 
-    def get_num_boards(self, total_width):
+        for i in range(self.num_beams)[:-1]:
+            location = (0, y_offset + 1.5, self.height)
+            board = TwoByEight(label, self.dx, location)
+            board.object.rotation_euler = (pi/2, pi/2, 0)
+            beams.append(board.object)
+            y_offset = y_offset + dy
+
+        # # Add the last board
+        # location = (0, self.dy, self.height)
+        # board = TwoByEight(label, self.dx, location)
+        # board.object.rotation_euler = (pi/2, pi/2, 0)
+        # beams.append(board.object)
+        return beams
+
+
+    def get_num_beams(self):
+        num_beams = floor(self.dy / self.beam_center)
+        return num_beams + 2
+
+
+    def get_num_boards(self):
         w = self.board_width + self.spacing
-        num_boards = ceil(total_width / w)
+        num_boards = ceil(self.dx / w)
         return num_boards
 
 
@@ -54,7 +95,7 @@ class Stairs:
         z_offset = self.height
         x_offset = 0.0
         num_steps = self.get_num_steps()
-        label = '{0}_{1}'.format(name, self.type)
+        label = name
         self.boards = []
         for i in range(num_steps):
             for j in range(boards_per_step):

@@ -51,14 +51,14 @@ class DoorWindowBase:
 class Door(DoorWindowBase):
 
     def __init__(self, label, height, length):
-        thickness = feet(0.5)
+        thickness = feet(0.25)
         super(Door, self).__init__(label, length, thickness, height)
 
 
 class Window(DoorWindowBase):
 
     def __init__(self, label, height, length):
-        thickness = feet(0.5)
+        thickness = feet(0.25)
         super(Window, self).__init__(label, length, thickness, height)
 
 

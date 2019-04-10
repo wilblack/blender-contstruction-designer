@@ -53,16 +53,30 @@ class Board:
 
 class TwoBySix(Board):
     name = '2by6'
+    width = 5.5
+    thickness = 1.5
 
     def __init__(self, label, l, location, rotation=(0,0,0)):
-        super(TwoBySix, self).__init__(label, l, 5.5, 1.5, location, rotation)
+        super(TwoBySix, self).__init__(label, l, self.width, self.thickness, location, rotation)
+
+
+class TwoByEight(Board):
+    name = '2by8'
+    width = 7.5
+    thickness = 1.5
+
+    def __init__(self, label, l, location, rotation=(0,0,0)):
+        super(TwoByEight, self).__init__(label, l, self.width, self.thickness, location, rotation)
+
 
 
 class OneByOne(Board):
     name = '1by1'
+    width = 1.0
+    thickness = 1.0
 
     def __init__(self, label, l, location=(0, 0, 0), rotation=(0, 0, 0)):
-        super(OneByOne, self).__init__(label, l, 1.0, 1.0, location, rotation)
+        super(OneByOne, self).__init__(label, l, self.width, self.thickness, location, rotation)
 
 
 

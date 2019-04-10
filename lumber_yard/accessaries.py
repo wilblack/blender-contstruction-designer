@@ -15,7 +15,7 @@ class Table:
         self.objects = []
         top = DoorWindowBase(label, dy, dx, self.thickness)
         top.object.location = (0, 0, self.height)
-        top.object['label'] = label
+        top.object['label'] = self.label
         self.objects.append(top.object)
 
 

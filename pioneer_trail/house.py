@@ -31,7 +31,7 @@ DECK_Y_OFFSET = HOUSE_Y_OFFSET - feet(6)
 DECK_X_OFFSET = feet(40) + DECK_LENGTH
 
 
-STEP_EXTENSION_WIDTH = feet(4)
+STEP_EXTENSION_WIDTH = feet(4.5)
 STEP_EXTENSION_LENGTH = feet(4)
 STEP_EXTENSION_HEIGHT = DECK_HEIGHT
 STEP_EXTENSION_X_OFFSET = DECK_X_OFFSET
@@ -64,7 +64,7 @@ def create_deck(scene):
     objects = bpy.context.scene.objects
     for obj in objects:
         label = obj.get('label', None)
-        if label and label == '{0}_2by6'.format(name):
+        if label and label == name:
             print("Selecting {0}".format(label))
             obj.select = True
             obj.data.materials.append(mat_decking)
@@ -75,28 +75,6 @@ def create_deck(scene):
     bpy.ops.transform.translate(value=(DECK_X_OFFSET, DECK_Y_OFFSET, 0))
     bpy.ops.transform.rotate(value=pi/2, axis=(False, False, True))
     bpy.context.scene.objects.active = None
-
-
-
-    # name = 'old_deck'
-    # decking = Decking(name, length, CURRENT_DECK_WIDTH, height + feet(0.1))
-    # for board in decking.boards:
-    #     scene.objects.link(board)
-    # # Rotate and translate deck
-    # bpy.ops.object.select_all(action='DESELECT')
-    # objects = bpy.context.scene.objects
-    # for obj in objects:
-    #     label = obj.get('label', None)
-    #     if label and label == '{0}_2by6'.format(name):
-    #         print("Selecting {0}".format(label))
-    #         obj.select = True
-    #         obj.data.materials.append(mat2)
-    #         bpy.context.scene.objects.active = obj
-    #         bpy.context.object.active_material.diffuse_color = (0.6, 0.6, 0.6)
-    # bpy.ops.object.join()
-    # bpy.ops.transform.translate(value=(DECK_X_OFFSET, CURRENT_DECK_Y_OFFSET, 0))
-    # bpy.ops.transform.rotate(value=pi/2, axis=(False, False, True))
-    # bpy.context.scene.objects.active = None
 
 
     # Add step extension
@@ -110,7 +88,7 @@ def create_deck(scene):
     objects = bpy.context.scene.objects
     for obj in objects:
         label = obj.get('label', None)
-        if label and label == '{0}_2by6'.format(name):
+        if label and label == '{0}'.format(name):
             print("Selecting {0}".format(label))
             obj.select = True
             obj.data.materials.append(mat_decking)
@@ -139,14 +117,14 @@ def create_deck(scene):
     objects = bpy.context.scene.objects
     for obj in objects:
         label = obj.get('label', None)
-        if label and label == '{0}_2by6'.format(name):
+        if label and label == '{0}'.format(name):
             print("Selecting {0}".format(label))
             obj.select = True
             obj.data.materials.append(mat_decking)
             bpy.context.scene.objects.active = obj
 
     bpy.ops.object.join()
-    bpy.ops.transform.translate(value=(STAIRS_X_OFFSET, STAIRS_Y_OFFSET, 0))
+    bpy.ops.transform.translate(value=(STAIRS_X_OFFSET, STAIRS_Y_OFFSET - feet(0.5), 0))
     bpy.ops.transform.rotate(value=pi, axis=(False, False, True))
     bpy.context.scene.objects.active = None
 
@@ -285,7 +263,6 @@ def create_house(scene):
     bpy.context.scene.objects.active = None
 
     name = 'se_large_window_bot'
-    window_y_offset = door_y_offset + feet(8)
     length = feet(5)
     height = feet(3)
     window = Window(name, height=height, length=length)
@@ -298,6 +275,21 @@ def create_house(scene):
     bpy.ops.transform.translate(value=(SOUTH_LENGTH - feet(4), HOUSE_Y_OFFSET - 3, feet(3)))
     bpy.ops.transform.rotate(value=pi/2, axis=(False, False, True))
     bpy.context.scene.objects.active = None
+
+    name = 'sw_large_window_bot'
+    length = feet(5)
+    height = feet(3)
+    window = Window(name, height=height, length=length)
+    scene.objects.link(window.object)
+    bpy.ops.object.select_all(action='DESELECT')
+    window.object.select = True
+    window.object.data.materials.append(mat_windows)
+    bpy.context.scene.objects.active = window.object
+    bpy.context.object.active_material.diffuse_color = (1, 1, 1)
+    bpy.ops.transform.translate(value=(feet(10), HOUSE_Y_OFFSET - 3, feet(3)))
+    bpy.ops.transform.rotate(value=pi/2, axis=(False, False, True))
+    bpy.context.scene.objects.active = None
+
 
     name = 'se_large_window_top'
     window_y_offset = HOUSE_Y_OFFSET - 3
