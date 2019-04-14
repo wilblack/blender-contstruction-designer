@@ -8,7 +8,7 @@ from mathutils import Vector
 class DoorWindowBase:
     """
     w - x-axis
-    l - y-axis
+    dy - y-axis
     h - z-axis
     """
     def __init__(self, label, l, w, h):

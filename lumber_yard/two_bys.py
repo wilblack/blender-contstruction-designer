@@ -5,27 +5,30 @@ from mathutils import Vector
 
 class Board:
     """
-    l is the length along y-axis
-    h is the thickness, i.e. on a 2by is 1.5, along z-axis
-    w is the width of the board, i.e. on a 2by6 its 5.5, along x-axis
-    """
-    name = '2by'
-    def __init__(self, label, l, w, h, location, rotation=(0,0,0)):
+    Boards are drawn laid flat with there length along the x-axis.
 
-        self.l = l
-        self.h = h
-        self.w = w
+    dy is the length along y-axis
+    dz is the thickness, i.e. on a 2by is 1.5, along z-axis
+    dx is the width of the board, i.e. on a 2by6 its 5.5, along x-axis
+    """
+    type = 'board'
+
+    def __init__(self, label, dy, dx, dz, location, rotation=(0, 0, 0)):
+
+        self.dy = dy
+        self.dz = dz
+        self.dx = dx
 
         verts = [
             Vector((0, 0, 0)),
-            Vector((0, 0,self.h)),
-            Vector((self.w, 0,self.h)),
-            Vector((self.w, 0, 0)),
+            Vector((0, 0,self.dz)),
+            Vector((self.dx, 0,self.dz)),
+            Vector((self.dx, 0, 0)),
 
-            Vector((0, self.l, 0)),
-            Vector((0, self.l, self.h)),
-            Vector((self.w, self.l, self.h)),
-            Vector((self.w, self.l, 0)),
+            Vector((0, self.dy, 0)),
+            Vector((0, self.dy, self.dz)),
+            Vector((self.dx, self.dy, self.dz)),
+            Vector((self.dx, self.dy, 0)),
         ]
 
         edges = []
@@ -39,20 +42,20 @@ class Board:
 
         ]
 
-
-        mesh = bpy.data.meshes.new(name=self.name)
+        mesh = bpy.data.meshes.new(name=self.type)
         mesh.from_pydata(verts, edges, faces)
         mesh.validate(verbose=True)
-        self.object = bpy.data.objects.new(self.name, mesh)
+        self.object = bpy.data.objects.new(self.type, mesh)
         self.object.location = location
         self.object.rotation_euler = rotation
         self.object["scripted"] = True
         self.object["label"] = label
+        self.object['type'] = self.type
 
 
 
 class TwoBySix(Board):
-    name = '2by6'
+    type = '2by6'
     width = 5.5
     thickness = 1.5
 
@@ -61,7 +64,7 @@ class TwoBySix(Board):
 
 
 class TwoByEight(Board):
-    name = '2by8'
+    type = '2by8'
     width = 7.5
     thickness = 1.5
 
@@ -69,9 +72,17 @@ class TwoByEight(Board):
         super(TwoByEight, self).__init__(label, l, self.width, self.thickness, location, rotation)
 
 
+class FourBySix(Board):
+    type = '4by6'
+    width = 5.5
+    thickness = 3.5
+
+    def __init__(self, label, l, location, rotation=(0,0,0)):
+        super(FourBySix, self).__init__(label, l, self.width, self.thickness, location, rotation)
+
 
 class OneByOne(Board):
-    name = '1by1'
+    type = '1by1'
     width = 1.0
     thickness = 1.0
 
