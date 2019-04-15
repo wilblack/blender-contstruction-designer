@@ -88,23 +88,26 @@ def create_berm(scene):
     d_theta = foo * pi
     rot = 180 * (1 - (1 - foo) / 2)
     rotation = (0, 0, radians(rot))
-    location = (feet(13.5), feet(15.5), 0)
-
-    berm = Berm('berm', feet(12), feet(5), feet(5), d_theta, location, rotation)
+    location = (feet(14.5), feet(17), 0)
+    radius = feet(13)
+    berm = Berm('berm', radius, feet(5), feet(5), d_theta, location, rotation)
     scene.objects.link(berm.object)
     bpy.context.scene.objects.active = berm.object
     bpy.context.object.active_material.diffuse_color = (0.5, 0.3, 0)
 
 
-def create_berm_posts(scene):
+def create_berm_posts(scene, TREE_LOCATION):
 
     backstop_x = 18.5
+    tree_y_offset = TREE_LOCATION[1]
+    tree_x_offset = TREE_LOCATION[0]
 
+    back_tree_y_offset = feet(10)
     berm_posts = [
-        ((backstop_x, feet(13.5), -feet(3)), (radians(90), 0, 0)),
-        ((backstop_x, feet(17.5), -feet(3)), (radians(90), 0, 0)),
-        ((backstop_x, feet(21.5), -feet(3)), (radians(90), 0, 0)),
-        ((backstop_x + 72, feet(26), -feet(3)), (radians(90), 0, 0))
+        ((backstop_x, back_tree_y_offset + feet(5), -feet(3)), (radians(90), 0, 0)),
+        ((backstop_x, back_tree_y_offset + feet(9), -feet(3)), (radians(90), 0, 0)),
+        ((backstop_x, back_tree_y_offset + feet(15), -feet(3)), (radians(90), 0, 0)),
+        ((backstop_x + feet(6), back_tree_y_offset + feet(19), -feet(3)), (radians(90), 0, 0))
     ]
 
     height = feet(10)
@@ -151,7 +154,7 @@ def create_2by12s(scene):
         # [backstop_x, y, z + 11.5 * 9],
     ]
     for location in _2by12s:
-        obj = add_2by12(scene, feet(16), location, rotation)
+        obj = add_2by12(scene, feet(18), location, rotation)
 
     print("Adding South 2x12's")
     y = 60 + 4 * 12
@@ -174,7 +177,7 @@ def create_2by12s(scene):
         obj = add_2by12(scene, feet(10), location, rotation)
 
     print("Adding North 2x12's")
-    y = feet(21.5)
+    y = feet(24.5)
     z = 18
     x = backstop_x + 1.5
     rotation = (0, radians(90), radians(-54.5))
@@ -194,7 +197,7 @@ def create_2by12s(scene):
         obj = add_2by12(scene, feet(10), location, rotation)
 
 
-def create_mtb_track(scene):
-    create_berm_posts(scene)
+def create_mtb_track(scene, TREE_LOCATION):
+    create_berm_posts(scene, TREE_LOCATION)
     create_2by12s(scene)
     create_berm(scene)

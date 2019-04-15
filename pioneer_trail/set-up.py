@@ -44,13 +44,15 @@ TABLE_B2 = 'table top B2'
 TABLE_B3 = 'table top B3'
 TABLE_B4 = 'table top B4'
 
-
+tree_radius = 12
+trunk_height = 200
+TREE_LOCATION = (12 + feet(5), feet(5), trunk_height / 2)
 def create_trees():
 
-    trunk_height = 200
-    location1 = (12 + 5 * 12, 60, trunk_height / 2)
+
+    location1 = TREE_LOCATION
     tree1 = bpy.ops.mesh.primitive_cylinder_add(
-        radius=12,
+        radius=tree_radius,
         depth=trunk_height,
         location=location1)
     obj = bpy.context.object
@@ -66,7 +68,7 @@ def create_trees():
 
 
 
-    location2 = (12, 60 + 4 * 12, trunk_height / 2)
+    location2 = (12, feet(10), trunk_height / 2)
     tree2 = bpy.ops.mesh.primitive_cylinder_add(
         radius=12,
         depth=trunk_height,
@@ -197,7 +199,7 @@ print("Adding Trees")
 create_trees()
 
 print("Adding Berm Uprights")
-create_mtb_track(scene)
+create_mtb_track(scene, TREE_LOCATION)
 
 print("Create_table_tops")
 tree1_x = 12 + 5 * 12

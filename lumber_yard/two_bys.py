@@ -126,21 +126,15 @@ def add_2by12(scene, length, location, rotation=(0,0,0)):
     scene.objects.link(obj)
 
     mat = bpy.data.materials.new('Material 2')
-    tex = bpy.data.textures.new(name="SomeName", type="IMAGE")
-    # filepath = "//assests/Wood_Root.jpg"
-    # image_path = os.path.expanduser(filepath)
-    image_path = "/Users/wilblack/Projects/blender/mtb-track/assets/Wood_Root.jpg"
-    image = bpy.data.images.load(image_path)
-    tex.image = image
 
-    slot = mat.texture_slots.add()
-    slot.texture = tex
-    slot.texture_coords = 'UV'
-    slot.use_map_color_diffuse = True
-    slot.use_map_color_emission = True
-    slot.emission_color_factor = 0.5
-    slot.use_map_density = True
-    slot.mapping = 'FLAT'
+    # slot = mat.texture_slots.add()
+    # slot.texture = tex
+    # slot.texture_coords = 'UV'
+    # slot.use_map_color_diffuse = True
+    # slot.use_map_color_emission = True
+    # slot.emission_color_factor = 0.5
+    # slot.use_map_density = True
+    # slot.mapping = 'FLAT'
     # mat.active_texture = tex
     # mat.texture_slots[0].texture_coords = "GLOBAL"
     # mat.texture_slots[0].mapping = "CUBE"
