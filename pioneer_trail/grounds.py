@@ -52,7 +52,7 @@ def create_trees(scene, anchor):
     location = anchor
     trunk_radius = 12
     trunk_height = feet(25)
-    canopy_radius = feet(10)
+    canopy_radius = feet(3)
     canopy_depth = feet(20)
     canopy_height = feet(30)
     create_tree(location, 'tree_1', trunk_radius, trunk_height, canopy_radius, canopy_depth, canopy_height)
@@ -60,7 +60,7 @@ def create_trees(scene, anchor):
     location = (anchor[0] - feet(5), anchor[1] + feet(5), anchor[2])
     trunk_radius = 12
     trunk_height = feet(25)
-    canopy_radius = feet(8)
+    canopy_radius = feet(3)
     canopy_depth = feet(20)
     canopy_height = feet(30)
     create_tree(location, 'tree_2', trunk_radius, trunk_height, canopy_radius, canopy_depth, canopy_height)
@@ -68,7 +68,7 @@ def create_trees(scene, anchor):
     trunk_radius = 16
     location = (anchor[0] + feet(34), anchor[1], anchor[2])
     trunk_height = feet(25)
-    canopy_radius = feet(10)
+    canopy_radius = feet(3)
     canopy_depth = feet(20)
     canopy_height = feet(30)
     create_tree(location, 'tree_3', trunk_radius, trunk_height, canopy_radius, canopy_depth, canopy_height)
@@ -76,7 +76,7 @@ def create_trees(scene, anchor):
     trunk_radius = 10
     location = (anchor[0] + feet(46), anchor[1] + feet(22.5), anchor[2])
     trunk_height = feet(25)
-    canopy_radius = feet(10)
+    canopy_radius = feet(3)
     canopy_depth = feet(20)
     canopy_height = feet(30)
     create_tree(location, 'tree_4', trunk_radius, trunk_height, canopy_radius, canopy_depth, canopy_height)

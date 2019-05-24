@@ -200,24 +200,30 @@ def create_2by12s(scene):
 
 def create_table_tops(scene, anchor):
 
-
     print("Create_table_tops")
 
-    bline_y_offset = feet(10)
-    bline_x_offset = feet(15)
-    bline_return_y_offset = feet(5) + feet(18)
+    y_offset = anchor[1] + feet(10)
+    x_offset = anchor[0] + feet(12)
+    return_x_offset = anchor[0] + feet(8)
+    return_y_offset = anchor[1] + feet(21)
 
+    rotation = (0, 0, radians(8))
     locations = [
-        ('table_b1', (anchor[0] + bline_x_offset, bline_y_offset, 0), (0, 0, 0)),
-        ('table_b2', (anchor[0] + bline_x_offset + + feet(18), bline_y_offset, 0), (0, 0, 0)),
-        ('table_b3', (anchor[0] + bline_x_offset + feet(36), bline_y_offset, 0), (0, 0, 0)),
+        ('table_b1', (anchor[0] + x_offset, y_offset - feet(5), 0), rotation),
+        ('table_b2', (anchor[0] + x_offset + feet(18), y_offset - feet(2.5), 0), rotation),
+        ('table_b3', (anchor[0] + x_offset + feet(36), y_offset - feet(0), 0), rotation),
 
-        ('table_b4', (anchor[0] + bline_x_offset, bline_return_y_offset, 0), (0, 0, 0)),
-        ('table_b5', (anchor[0] + bline_x_offset + feet(18), bline_return_y_offset, 0), (0, 0, 0)),
-        ('table_b6', (anchor[0] + bline_x_offset + feet(36), bline_return_y_offset, 0), (0, 0, 0))
+        ('table_b4', (anchor[0] + return_x_offset, return_y_offset, 0), rotation),
+        ('table_b5', (anchor[0] + return_x_offset + feet(18), return_y_offset + feet(3), 0), (0, 0, 0)),
+        # ('table_b6', (anchor[0] + x_offset + feet(36), return_y_offset + feet(2), 0), (0, 0, 0))
     ]
+
+    total_length = feet(10)
+    top_length = feet(4)
+    width = feet(4)
+    height = feet(4)
     for location in locations:
-        obj = create_table_top(location[0], 10 * 12, 4 * 12, 4 * 12, 2.5 * 12, location[1], rotation=location[2])
+        obj = create_table_top(location[0], total_length, top_length, width, height, location[1], rotation=location[2])
         scene.objects.link(obj)
         bpy.context.scene.objects.active = obj
         obj.data.materials.append(mat_dirt)
@@ -227,17 +233,20 @@ def create_table_tops(scene, anchor):
 def create_aline(scene, anchor):
     print("Creating A line jumps")
 
-    aline_y_offset = feet(5)
-    locations = [
-        (anchor[0] + feet(14), aline_y_offset, 0.1),
-        (anchor[0] + feet(14) + feet(30), aline_y_offset, 0.1)
-    ]
-    gap = feet(15)
-    height = feet(5)
-    width = feet(5)
+    aline_y_offset = feet(2)
+
+    gap = feet(17)
+    height = feet(6)
+    width = feet(4)
     takeoff_dx = feet(7)
-    landing_dx = feet(10)
-    rotation = (0, 0, 0)
+    landing_dx = feet(11)
+    rotation = (0, 0, radians(5))
+    # lip of take is 60 from tree1, the x-location is the location of the end of the landing.
+    x = anchor[0] + (feet(60) - gap - landing_dx)
+    locations = [
+        (x, anchor[1] + aline_y_offset, 0.1),
+    ]
+
     for location in locations:
         obj = create_double_jump(height, width, gap, takeoff_dx, landing_dx, location, rotation)
         scene.objects.link(obj)
