@@ -2,6 +2,7 @@ import bpy
 from mathutils import Vector
 from math import radians, sin, cos, pi
 
+from dirt_features.jumps import create_table_top, create_double_jump
 from lumber_yard.two_bys import FourBySix, add_2by12
 from lumber_yard.utils import feet
 
@@ -197,7 +198,57 @@ def create_2by12s(scene):
         obj = add_2by12(scene, feet(10), location, rotation)
 
 
-def create_mtb_track(scene, TREE_LOCATION):
-    create_berm_posts(scene, TREE_LOCATION)
+def create_table_tops(scene, anchor):
+
+
+    print("Create_table_tops")
+
+    bline_y_offset = feet(10)
+    bline_x_offset = feet(15)
+    bline_return_y_offset = feet(5) + feet(18)
+
+    locations = [
+        ('table_b1', (anchor[0] + bline_x_offset, bline_y_offset, 0), (0, 0, 0)),
+        ('table_b2', (anchor[0] + bline_x_offset + + feet(18), bline_y_offset, 0), (0, 0, 0)),
+        ('table_b3', (anchor[0] + bline_x_offset + feet(36), bline_y_offset, 0), (0, 0, 0)),
+
+        ('table_b4', (anchor[0] + bline_x_offset, bline_return_y_offset, 0), (0, 0, 0)),
+        ('table_b5', (anchor[0] + bline_x_offset + feet(18), bline_return_y_offset, 0), (0, 0, 0)),
+        ('table_b6', (anchor[0] + bline_x_offset + feet(36), bline_return_y_offset, 0), (0, 0, 0))
+    ]
+    for location in locations:
+        obj = create_table_top(location[0], 10 * 12, 4 * 12, 4 * 12, 2.5 * 12, location[1], rotation=location[2])
+        scene.objects.link(obj)
+        bpy.context.scene.objects.active = obj
+        obj.data.materials.append(mat_dirt)
+        bpy.context.object.active_material.diffuse_color = (0.5, 0.3, 0)
+
+
+def create_aline(scene, anchor):
+    print("Creating A line jumps")
+
+    aline_y_offset = feet(5)
+    locations = [
+        (anchor[0] + feet(14), aline_y_offset, 0.1),
+        (anchor[0] + feet(14) + feet(30), aline_y_offset, 0.1)
+    ]
+    gap = feet(15)
+    height = feet(5)
+    width = feet(5)
+    takeoff_dx = feet(7)
+    landing_dx = feet(10)
+    rotation = (0, 0, 0)
+    for location in locations:
+        obj = create_double_jump(height, width, gap, takeoff_dx, landing_dx, location, rotation)
+        scene.objects.link(obj)
+        bpy.context.scene.objects.active = obj
+        obj.data.materials.append(mat_dirt)
+        bpy.context.object.active_material.diffuse_color = (0.5, 0.3, 0)
+
+
+def create_mtb_track(scene, anchor):
+    create_berm_posts(scene, anchor)
     create_2by12s(scene)
     create_berm(scene)
+    create_table_tops(scene, anchor)
+    create_aline(scene, anchor)

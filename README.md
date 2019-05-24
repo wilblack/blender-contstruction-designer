@@ -14,13 +14,14 @@ python3 -m venv blender_env
 cd /Applications/Blender
 ./blender.app/Contents/MacOS/blender
 
-I set and alis in my bachroc to the blender command, now just use `blender`
+I set and alis in my bashrc to the blender command, now just use `blender`
 
 ## Start with blender file
 blender mtb_track.blend
 
 ## Start Blender and run  a script.
-blender foo.blend --python pioneer_trail/set-up.py
+cd /Users/wilblack/Projects/blender/blender-contstruction-designer
+blender --python pioneer_trail/set-up.py
 
 
 ## Resources
