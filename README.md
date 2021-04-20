@@ -6,6 +6,7 @@ https://github.com/wilblack/blender-contstruction-designer
 # Create venv
 
 python3 -m venv blender_env
+source blender_env/bin/activate
 
 
 # Starting Blender
@@ -14,7 +15,9 @@ python3 -m venv blender_env
 cd /Applications/Blender
 ./blender.app/Contents/MacOS/blender
 
-I set and alis in my bachroc to the blender command, now just use `blender`
+/Applications/Blender/blender.app/Contents/MacOS/blender mtb_track.blend
+
+I set and alias in my bashrc to the blender command, now just use `blender`
 
 ## Start with blender file
 blender mtb_track.blend
@@ -22,6 +25,7 @@ blender mtb_track.blend
 ## Start Blender and run  a script.
 blender foo.blend --python pioneer_trail/set-up.py
 
+/Applications/Blender/blender.app/Contents/MacOS/blender foo.blend --python pioneer_trail/set-up.py
 
 ## Resources
 
